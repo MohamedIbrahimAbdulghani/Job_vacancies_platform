@@ -1,0 +1,15 @@
+*-* in models to make relationship in was one to many make function in table where reltion is many
+ex:
+    - user table and resume table 
+    the relationship is one to many ( one user can upload many resumes )
+    -> make function in resume file to get users by resume 
+        ------- public function user() {
+                    return $this->belongsTo(User::class, 'user_id', 'id');
+                }
+
+    -> make function in user file to get resumes related user
+        ------- public function resumes() {
+                    return $this->hasMany(Resume::class, 'user_id', 'id');
+                }
+
+باختصار لو انا هعمل علاقه one to many في جدول ال many هعمل function اجيب بيها الone الخاصة بالجدول ال one

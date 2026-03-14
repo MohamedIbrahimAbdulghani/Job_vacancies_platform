@@ -13,7 +13,6 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasUuids, SoftDeletes;
-
     protected $keyType = "string";
 
     public $incrementing = false;
@@ -26,7 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
     ];
 
     protected $dates = [
@@ -56,11 +55,11 @@ class User extends Authenticatable
             'deleted_at' => 'datetime',
         ];
     }
-    public function resume() {
+    public function resumes() {
         return $this->hasMany(Resume::class, 'user_id', 'id');
     }
 
-    public function jobapplication() {
+    public function jobapplications() {
         return $this->hasMany(JobApplication::class, 'user_id', 'id');
     }
 
