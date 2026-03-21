@@ -12,12 +12,23 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth')->group(function () {
+    // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/company', [CompanyController::class, 'index'])->name('company.index');
-    Route::get('/job_application', [JobApplicationController::class, 'index'])->name('job_application.index');
-    Route::get('/job_category', [JobCategoryController::class, 'index'])->name('job_category.index');
-    Route::get('/job_vacancy', [JobVacancyController::class, 'index'])->name('job_vacancy.index');
-    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+
+    // Companies
+    Route::resource('company', CompanyController::class);
+
+    // Job Applications
+    Route::resource('job_application', JobApplicationController::class);
+
+    // Job Categories
+    Route::resource('job_category', JobCategoryController::class);
+
+    // Job Vacancies
+    Route::resource('job_vacancy', JobVacancyController::class);
+
+    // Users
+    Route::resource('user', UserController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

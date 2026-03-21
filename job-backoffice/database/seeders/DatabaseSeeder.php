@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // Seed the user admin
-        User::firstOrCreate([
+        User::firstOrCreate([ // firstOrCreate([], []) => this is function to check or to make validation about user if user is found in database not make create or don't run this function
             'email' => 'admin@admin.com',
         ], [
             'name' => 'Admin',

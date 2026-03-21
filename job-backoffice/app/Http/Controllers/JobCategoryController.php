@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JobCategory;
 use Illuminate\Http\Request;
 
 class JobCategoryController extends Controller
@@ -11,7 +12,8 @@ class JobCategoryController extends Controller
      */
     public function index()
     {
-        return view('job_category.index');
+        $categories = JobCategory::latest()->paginate(10)->onEachSide(1); // this is to get the last hob category will added it in database and make it paginate by one side or one button
+        return view('job_category.index', compact('categories'));
     }
 
     /**
@@ -43,7 +45,7 @@ class JobCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return $id;
     }
 
     /**
@@ -59,6 +61,6 @@ class JobCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return $id;
     }
 }
