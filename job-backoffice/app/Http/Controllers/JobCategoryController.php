@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateJobCategoryRequest;
+use App\Http\Requests\UpdateJobCategoryRequest;
 use App\Models\JobCategory;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,7 @@ class JobCategoryController extends Controller
      */
     public function index()
     {
-        $categories = JobCategory::latest()->paginate(10)->onEachSide(1); // this is to get the last hob category will added it in database and make it paginate by one side or one button
+        $categories = JobCategory::latest()->paginate(5)->onEachSide(1); // this is to get the last hob category will added it in database and make it paginate by one side or one button
         return view('job_category.index', compact('categories'));
     }
 
@@ -21,15 +23,18 @@ class JobCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('job_category.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateJobCategoryRequest $request)
     {
-        //
+        JobCategory::create([
+            'name' => $request->name
+        ]);
+        return redirect()->route('job_category.index')->with('success', 'Job Category Created Successfully!');
     }
 
     /**
@@ -45,15 +50,20 @@ class JobCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        return $id;
+        $category = JobCategory::findOrFail($id);
+        return view('job_category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateJobCategoryRequest $request, string $id)
     {
-        //
+        $category = JobCategory::findOrFail($id);
+        $category->update([
+            'name' => $request->name
+        ]);
+        return redirect()->route('job_category.index')->with('success', 'Job Category Updated Successfully!');
     }
 
     /**

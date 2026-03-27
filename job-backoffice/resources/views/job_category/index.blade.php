@@ -5,7 +5,15 @@
         </h2>
     </x-slot>
 
+
     <div class="p-6 overflow-x-auto">
+        {{-- To Show Success Message --}}
+        <x-toast-notification />
+
+        {{-- Add Job Category Button --}}
+            <div class="flex items-center justify-end ">
+                <a href="{{ route('job_category.create') }}" class="inline-flex items-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2">Add Job Category</a>
+            </div>
         {{-- Job Category Table --}}
         <table class="min-w-full mt-4 bg-white divide-y divide-gray-200 rounded-lg shadow">
             <thead>

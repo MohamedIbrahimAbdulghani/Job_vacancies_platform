@@ -36,7 +36,7 @@
 
         <form action="{{ route('logout') }}" method="post">
             @csrf
-            <x-nav-link :href="route('logout')" :active="false" class="text-red-500" onclick="event.preventDefault(); this.closest('form').submit();">
+            <x-nav-link :href="route('logout')" :active="false" class="text-red-500" style="color: red;" onclick="event.preventDefault(); this.closest('form').submit();">
                 Logout
             </x-nav-link>
             {{--
