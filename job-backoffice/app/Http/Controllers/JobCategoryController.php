@@ -12,9 +12,17 @@ class JobCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = JobCategory::latest()->paginate(5)->onEachSide(1); // this is to get the last hob category will added it in database and make it paginate by one side or one button
+        // Active
+        $query = JobCategory::latest();
+
+        // Archived
+        if($request->input('archived') == 'true') {
+            $query->onlyTrashed();  // use it in archived mode when use softDeletes()
+        }
+
+        $categories = $query->paginate(5)->onEachSide(1); // this is to get the last hob category will added it in database and make it paginate by one side or one button
         return view('job_category.index', compact('categories'));
     }
 
@@ -71,6 +79,14 @@ class JobCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        return $id;
+        $category = JobCategory::findOrFail($id);
+        $category->delete();
+        return redirect()->route('job_category.index')->with('success', 'Job Category Deleted Successfully!');
+    }
+    public function restore(string $id)
+    {
+        $category = JobCategory::withTrashed()->findOrFail($id);
+        $category->restore();
+        return redirect()->route('job_category.index', ['archived'=>'true'])->with('success', 'Job Category Restored Successfully!');
     }
 }

@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
 
     // Job Categories
     Route::resource('job_category', JobCategoryController::class);
+    Route::put('job_category/{id}/restore', [JobCategoryController::class, 'restore'])->name('job_category.restore');
 
     // Job Vacancies
     Route::resource('job_vacancy', JobVacancyController::class);
