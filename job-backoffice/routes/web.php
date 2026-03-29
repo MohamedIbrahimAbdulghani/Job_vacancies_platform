@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
 
     // Companies
     Route::resource('company', CompanyController::class);
+    Route::put('company/{id}/restore', [CompanyController::class, 'restore'])->name('company.restore');
 
     // Job Applications
     Route::resource('job_application', JobApplicationController::class);
