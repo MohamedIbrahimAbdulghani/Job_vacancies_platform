@@ -8,6 +8,8 @@ use App\Models\Company;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
 {
@@ -33,7 +35,8 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+        $industries = ['Technology', 'Finance', 'Healthcare', 'Education', 'Retail', 'Manufacturing', 'Other'];
+        return view('company.create', compact('industries'));
     }
 
     /**
@@ -41,12 +44,24 @@ class CompanyController extends Controller
      */
     public function store(CreateCompanyRequest $request)
     {
+        // Create Company Owner
+        $companyOwner = User::create([
+            'name' => $request->owner_name,
+            'email' => $request->owner_email,
+            'password' => Hash::make($request->owner_password),
+            'role' => 'company_owner',
+        ]);
+        // validation if the owner email is already in use
+        if(!$companyOwner) {
+            return redirect()->back()->with('error', 'Failed to create company owner');
+        }
+        // Create Company
         Company::create([
             'name' => $request->name,
             'address' => $request->address,
             'industry' => $request->industry,
             'website' => $request->website,
-            'owner_id' => Auth::user()->id
+            'owner_id' => $companyOwner->id
         ]);
         return redirect()->route('company.index')->with('success', 'Company Created Successfully!');
     }

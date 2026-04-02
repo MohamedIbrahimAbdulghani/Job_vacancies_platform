@@ -19,6 +19,7 @@
             <div>
                 <h3 class="text-lg font-bold">Company Information</h3>
                 <p><strong>Name: </strong>{{ $company->name }}</p>
+                <p><strong>Owner: </strong>{{ $company->user->name }}</p>
                 <p><strong>Address: </strong>{{ $company->address }}</p>
                 <p><strong>Industry: </strong>{{ $company->industry }}</p>
                 <p><strong>Website: </strong><a href="{{ $company->website }}" target="_blank" class="text-blue-500 underline hover:text-blue-700">{{ $company->website }}</a></p>
