@@ -22,7 +22,7 @@ class JobCategoryController extends Controller
             $query->onlyTrashed();  // use it in archived mode when use softDeletes()
         }
 
-        $categories = $query->paginate(5)->onEachSide(1); // this is to get the last hob category will added it in database and make it paginate by one side or one button
+        $categories = $query->paginate(10)->onEachSide(1); // this is to get the last hob category will added it in database and make it paginate by one side or one button
         return view('job_category.index', compact('categories'));
     }
 
