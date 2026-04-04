@@ -108,6 +108,10 @@ class CompanyController extends Controller
         } else {
             $company->owner->update([ 'name' => $request->owner_name]);
         }
+        // This condition is added to identify the incoming route type
+        if($request->query('redirectToList') == 'false') {
+            return redirect()->route('company.show', $id)->with('success', 'Company Updated Successfully!');
+        }
         return redirect()->route('company.index')->with('success', 'Company Updated Successfully!');
     }
 

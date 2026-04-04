@@ -27,7 +27,7 @@
             {{-- Edit And Archived Buttons --}}
             <div class="flex justify-end space-x-2 ">
                 {{-- Edit Button --}}
-                <a href="{{ route('company.edit', $company->id) }}" class="inline-flex items-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2"> Edit</a>
+                <a href="{{ route('company.edit', ['company' => $company->id, 'redirectToList' => 'false']) }}" class="inline-flex items-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2"> Edit</a>
                 {{-- Delete Button --}}
                 <form action="{{ route('company.destroy', $company->id) }}" method="post" class="inline-block">
                     @csrf
