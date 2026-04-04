@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
 {
+    public $industries = ['Technology', 'Finance', 'Healthcare', 'Education', 'Retail', 'Manufacturing', 'Other']; // this variable to make industries list in company create and edit
+
     /**
      * Display a listing of the resource.
      */
@@ -35,7 +37,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $industries = ['Technology', 'Finance', 'Healthcare', 'Education', 'Retail', 'Manufacturing', 'Other'];
+        $industries = $this->industries;
         return view('company.create', compact('industries'));
     }
 
@@ -81,7 +83,8 @@ class CompanyController extends Controller
     public function edit(string $id)
     {
         $company = Company::findOrFail($id);
-        return view('company.edit', compact('company'));
+        $industries = $this->industries;
+        return view('company.edit', compact('company', 'industries'));
     }
 
     /**
@@ -96,6 +99,15 @@ class CompanyController extends Controller
             'industry' => $request->industry,
             'website' => $request->website,
         ]);
+        // Update Owner
+        if(!empty($request->owner_password)) {
+            $company->owner->update([
+                'name' => $request->owner_name,
+                'password' => $request->owner_password
+        ]);
+        } else {
+            $company->owner->update([ 'name' => $request->owner_name]);
+        }
         return redirect()->route('company.index')->with('success', 'Company Updated Successfully!');
     }
 

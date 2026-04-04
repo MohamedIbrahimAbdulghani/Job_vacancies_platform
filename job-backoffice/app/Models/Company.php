@@ -48,7 +48,7 @@ class Company extends Model
     }
 
     // this function to make relationship one to many between user( owner ) and company
-    public function user() {
+    public function owner() {
         return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 
