@@ -36,8 +36,12 @@
                     @forelse ($job_vacancies as $job_vacancy)
                         <tr class="border-b">
                             <td class="px-4 py-3 truncate">
-                                <a href="{{ route('job_vacancy.show', $job_vacancy->id) }}" class="text-blue-500 underline hover:text-blue-700">{{ $job_vacancy->title }}</a>
-                            </td>
+                                @if(request()->input('archived') == 'true')
+                                    <span class="text-gray-500 truncate">{{ $job_vacancy->title }}</span>
+                                @else
+                                    <a href="{{ route('job_vacancy.show', $job_vacancy->id) }}" class="text-blue-500 underline hover:text-blue-700">{{ $job_vacancy->title }}</a>
+                                @endif
+                                </td>
                             <td class="px-4 py-3 text-gray-800 truncate">{{ $job_vacancy->company->name }}</td>
                             <td class="px-4 py-3 text-gray-800 truncate">{{ $job_vacancy->location }}</td>
                             <td class="hidden px-4 py-3 text-gray-800 truncate lg:table-cell">{{ $job_vacancy->type }}</td>

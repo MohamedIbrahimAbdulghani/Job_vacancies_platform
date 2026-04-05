@@ -1,4 +1,4 @@
-<nav class="w-full h-auto border-b border-gray-200 bg-white md:w-[250px] md:h-screen md:border-r md:border-b-0">
+<nav class="w-auto h-auto border-b border-gray-200 bg-white md:w-[250px] md:h-screen md:border-r md:border-b-0 md:flex md:flex-col">
 
     {{-- Application logo --}}
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
@@ -16,7 +16,7 @@
     </div>
 
     {{-- Navigation links --}}
-    <ul id="nav-menu" class="flex-col hidden px-4 py-6 space-y-2 md:flex">
+    <ul id="nav-menu" class="flex-col flex-1 hidden px-4 py-6 space-y-2 md:flex ">
         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
             Dashboard
         </x-nav-link>

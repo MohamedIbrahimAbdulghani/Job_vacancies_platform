@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JobApplication;
 use Illuminate\Http\Request;
 
 class JobApplicationController extends Controller
@@ -9,9 +10,18 @@ class JobApplicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('job_application.index');
+        // Active
+        $query = JobApplication::latest();
+
+        // // Archived
+        if($request->input('archived') == 'true') {
+            $query->onlyTrashed();  // use it in archived mode when use softDeletes()
+        }
+
+        $job_applications = $query->paginate(10)->onEachSide(1); // this is to get the last hob category will added it in database and make it paginate by one side or one button
+        return view('job_application.index', compact('job_applications'));
     }
 
     /**
@@ -19,7 +29,7 @@ class JobApplicationController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,7 +45,8 @@ class JobApplicationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $job_application = JobApplication::findOrFail($id);
+        return view('job_application.show', compact('job_application'));
     }
 
     /**
@@ -59,6 +70,15 @@ class JobApplicationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $job_application = JobApplication::findOrFail($id);
+        $job_application->delete();
+        return redirect()->route('job_application.index')->with('success', 'Job Application Deleted Successfully!');
+    }
+
+    public function restore(string $id)
+    {
+        $job_application = JobApplication::withTrashed()->findOrFail($id);
+        $job_application->restore();
+        return redirect()->route('job_application.index')->with('success', 'Job Application Restored Successfully!');
     }
 }

@@ -60,7 +60,7 @@ class JobApplication extends Model
     }
 
     // this function to make relationship one to many between job_vacancies and job_applications
-    public function jobvacancy() {
+    public function jobVacancy() {
         return $this->belongsTo(JobVacancy::class, 'job_vacancy_id', 'id');
     }
 
