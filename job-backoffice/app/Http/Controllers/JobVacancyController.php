@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateJobVacancyRequest;
+use App\Http\Requests\UpdateJobVacancyRequest;
 use App\Models\Company;
 use App\Models\JobCategory;
 use Illuminate\Http\Request;
@@ -37,8 +38,8 @@ class JobVacancyController extends Controller
     {
         $companies = Company::all();
         $job_categories = JobCategory::all();
-        $type = $this->type;
-        return view('job_vacancy.create', compact('companies', 'job_categories', 'type'));
+        $types = $this->type;
+        return view('job_vacancy.create', compact('companies', 'job_categories', 'types'));
     }
 
     /**
@@ -72,15 +73,32 @@ class JobVacancyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $job_vacancy = JobVacancy::findOrFail($id);
+        $companies = Company::all();
+        $job_categories = JobCategory::all();
+        $types = $this->type;
+        return view('job_vacancy.edit', compact('job_vacancy', 'companies', 'job_categories', 'types'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateJobVacancyRequest $request, string $id)
     {
-        //
+        JobVacancy::findOrFail($id)->update([
+            'title'=>$request->title,
+            'description' => $request->description,
+            'location'=>$request->location,
+            'type'=>$request->type,
+            'salary'=>$request->salary,
+            'company_id'=>$request->company,
+            'category_id'=>$request->job_category,
+        ]);
+        // This condition is added to identify the incoming route type
+        if($request->query('redirectToList') == 'false') {
+            return redirect()->route('job_vacancy.show', $id)->with('success', 'Job Vacancy Updated Successfully!');
+        }
+        return redirect()->route('job_vacancy.index')->with('success', 'Job Vacancy Updated Successfully!');
     }
 
     /**
