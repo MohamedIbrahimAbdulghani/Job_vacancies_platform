@@ -15,14 +15,14 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="flex">
+        <div class="flex flex-col md:flex-row">
             @include('layouts.navigation')
 
             <div class="flex-1 min-h-screen bg-gray-100">
                 <!-- Page Heading -->
                 @isset($header)
                     <header class="bg-white shadow">
-                        <div class="w-full px-6 py-4">
+                        <div class="w-full px-4 py-4 sm:px-6">
                             {{ $header }}
                         </div>
                     </header>

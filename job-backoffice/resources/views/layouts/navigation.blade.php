@@ -1,13 +1,22 @@
-<nav class="w-[250px] h-screen bg-white border-r border-gray-200">
+<nav class="w-full h-auto border-b border-gray-200 bg-white md:w-[250px] md:h-screen md:border-r md:border-b-0">
+
     {{-- Application logo --}}
-    <div class="flex items-center px-6 py-4 border-b border-gray-200">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
         <a href="{{ route('dashboard') }}" class="flex items-center space-x-2">
             <x-application-logo class="w-auto h-6 mr-2 text-gray-800 fill-current" />
             <span class="text-lg font-semibold text-gray-800">Shaghalni</span>
         </a>
+
+        {{-- Hamburger Button: mobile only --}}
+        <button class="md:hidden" onclick="document.getElementById('nav-menu').classList.toggle('hidden')">
+            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
     </div>
+
     {{-- Navigation links --}}
-    <ul class="flex flex-col px-4 py-6 space-y-2">
+    <ul id="nav-menu" class="flex-col hidden px-4 py-6 space-y-2 md:flex">
         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
             Dashboard
         </x-nav-link>
@@ -41,14 +50,10 @@
             </x-nav-link>
             {{--
                 1- المستخدم يضغط Logout
-
                 2- preventDefault() يمنع فتح الرابط
-
                 3- closest('form') يجيب الفورم الأب
-
                 4- submit() يرسل الفورم
             --}}
         </form>
-
     </ul>
 </nav>

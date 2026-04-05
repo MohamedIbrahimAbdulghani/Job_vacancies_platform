@@ -11,9 +11,9 @@
                 @csrf
                 @method('PUT')
                 {{-- Company Details --}}
-                <div class="mb-4 p-6 bg-gray-50 border border-gray-100 rounded-lg shadow-sm">
-                    <h3 class="text-lg font-bold">Company Details</h3>
-                    <p class="text-sm text-gray-500 mb-2">Please fill in the details of the company</p>
+                <div class="p-6 mb-4 border border-gray-100 rounded-lg shadow-sm bg-gray-50">
+                    <h3 class="text-lg font-bold ">Company Details</h3>
+                    <p class="mb-2 text-sm text-gray-500">Please fill in the details of the company</p>
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Company Name</label>
                         <input type="text" name="name" id="name" class=" {{ $errors->has('name') ? 'outline-red-500 outline outline-1' : '' }} block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('name', $company->name) }}" >
@@ -53,9 +53,9 @@
                 </div>
 
                 {{-- Company Owner --}}
-                <div class="mb-4 p-6 bg-gray-50 border border-gray-100 rounded-lg shadow-sm">
+                <div class="p-6 mb-4 border border-gray-100 rounded-lg shadow-sm bg-gray-50">
                     <h3 class="text-lg font-bold">Company Owner</h3>
-                    <p class="text-sm text-gray-500 mb-2">Please fill in the details of the company owner</p>
+                    <p class="mb-2 text-sm text-gray-500">Please fill in the details of the company owner</p>
 
                     <div class="mb-4">
                         <label for="owner_name" class="block text-sm font-medium text-gray-700">Owner Name</label>

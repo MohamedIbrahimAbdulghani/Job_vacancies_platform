@@ -56,7 +56,7 @@ class JobVacancy extends Model
     }
 
     // this function to make relationship one to many between job_categories and job_vacancies
-    public function jobcategory() {
+    public function jobCategory() {
         return $this->belongsTo(JobCategory::class, 'category_id', 'id');
     }
 
