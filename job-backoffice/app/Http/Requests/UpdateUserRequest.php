@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateJobApplicationRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,13 @@ class UpdateJobApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|in:pending,accepted,rejected',
+            'password' => 'required|min:8',
         ];
     }
     public function messages() {
         return [
-            'status.required' => 'The application status is required',
-            'status.in' => 'The application status mast be either pending, accepted, or rejected',
+            'password.required' => 'The password is required',
+            'password.min' => 'The password mast be at least 8 characters long',
         ];
     }
 }
