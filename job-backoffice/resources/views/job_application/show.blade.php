@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ $job_application->user->name }}
+            {{ $job_application->user->name }} | Applied to {{ $job_application->jobVacancy->title }}
         </h2>
     </x-slot>
 
     <div class="p-3 overflow-x-hidden sm:p-4 lg:p-6">
         {{-- Back Button --}}
-        <div class="mb-6">
+        <div class="mt-2 mb-6">
             <a href="{{ route('job_application.index') }}" class="px-4 py-2 text-white bg-gray-400 rounded-md hover:bg-gray-500">← Back</a>
         </div>
 
@@ -21,8 +21,8 @@
                 <p class="truncate"><strong>Applicant: </strong>{{ $job_application->user->name }}</p>
                 <p class="truncate"><strong>Position: </strong>{{ $job_application->jobVacancy->title }}</p>
                 <p class="truncate"><strong>Company: </strong>{{ $job_application->jobVacancy->company->name }}</p>
-                <p class="truncate"><strong>Status: </strong>{{ $job_application->status }}</p>
-                <p class="truncate"><strong>Resume: </strong>{{ $job_application->resume->filename }}</p>
+                <p class="truncate"><strong>Status: </strong><span class=" @if($job_application->status === 'pending') text-blue-500 @elseif($job_application->status === 'accepted') text-green-500 @else text-red-500 @endif ">{{ $job_application->status }}</span></p>
+                <p class="truncate"><strong>Resume: </strong><a href="{{ $job_application->resume->filename }}" class="text-blue-500 underline hover:text-blue-700" target="_black">{{ $job_application->resume->filename }}</a></p>
             </div>
 
             {{-- Edit And Archived Buttons --}}
@@ -49,10 +49,10 @@
 
             {{-- Tabs Content --}}
             <div>
-                {{-- Jobs Tab --}}
+                {{-- Resume Tab --}}
                 <div class="{{ request('tab') == 'resume' || request('tab') == '' ? 'block' : 'hidden' }}">
 
-                    {{-- Jobs Table: tablet & desktop --}}
+                    {{-- Jobs Resume: tablet & desktop --}}
                     <div class="hidden overflow-x-auto md:block ">
                         <table class="w-full rounded-lg shadow bg-gray-50 " >
                             <thead>
@@ -74,24 +74,24 @@
                         </table>
                     </div>
 
-                    {{-- Jobs Cards: mobile only --}}
+                    {{-- Resume Cards: mobile only --}}
                     <div class="space-y-3 md:hidden ">
                             <div class="p-4 rounded-lg shadow bg-gray-50">
                                 <div class="mb-1">
                                     <span class="text-xs font-semibold text-gray-500">Summary</span>
-                                    <p class="text-gray-800 ">{{ $job_application->resume->summary }}</p>
+                                    <p class="p-2 text-gray-800 border-b">{{ $job_application->resume->summary }}</p>
                                 </div>
                                 <div class="mb-1">
                                     <span class="text-xs font-semibold text-gray-500">Skills</span>
-                                    <p class="text-gray-800 ">{{ $job_application->resume->skills }}</p>
+                                    <p class="p-2 text-gray-800 border-b">{{ $job_application->resume->skills }}</p>
                                 </div>
                                 <div class="mb-1">
                                     <span class="text-xs font-semibold text-gray-500">Experience</span>
-                                    <p class="text-gray-800 ">{{ $job_application->resume->experience }}</p>
+                                    <p class="p-2 text-gray-800 border-b">{{ $job_application->resume->experience }}</p>
                                 </div>
                                 <div class="mb-1">
                                     <span class="text-xs font-semibold text-gray-500">Education</span>
-                                    <p class="text-gray-800 ">{{ $job_application->resume->education }}</p>
+                                    <p class="p-2 text-gray-800 border-b">{{ $job_application->resume->education }}</p>
                                 </div>
                             </div>
                     </div>
@@ -117,16 +117,16 @@
                         </table>
                     </div>
 
-                    {{-- Applications Cards: mobile only --}}
+                    {{-- aiFeedback Cards: mobile only --}}
                     <div class="space-y-3 md:hidden">
                             <div class="p-4 rounded-lg shadow bg-gray-50">
                                 <div class="mb-1">
                                     <span class="text-xs font-semibold text-gray-500">Ai Score</span>
-                                    <p class="text-gray-800 ">{{ $job_application->aiGeneratedScore }}</p>
+                                    <p class="p-2 text-gray-800 border-b">{{ $job_application->aiGeneratedScore }}</p>
                                 </div>
                                 <div class="mb-1">
                                     <span class="text-xs font-semibold text-gray-500">Feedback</span>
-                                    <p class="text-gray-800 ">{{ $job_application->aiGeneratedFeedback }}</p>
+                                    <p class="p-2 text-gray-800 border-b">{{ $job_application->aiGeneratedFeedback }}</p>
                                 </div>
                             </div>
                     </div>

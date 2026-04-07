@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Job Application') }}
+            {{ __('Job Application') }} {{ request()->input('archived') == 'true' ? '(Archived)' : '' }}
         </h2>
     </x-slot>
 
@@ -42,7 +42,17 @@
                                 </td>
                             <td class="px-4 py-3 text-gray-800 truncate">{{ $job_application->jobVacancy->title ?? 'NULL'}}</td>
                             <td class="px-4 py-3 text-gray-800 truncate">{{ $job_application->jobVacancy->company->name ?? 'NULL' }}</td>
-                            <td class="hidden px-4 py-3 text-gray-800 truncate lg:table-cell">{{ $job_application->status }}</td>
+
+                            {{-- @if($job_application->status  === 'pending')
+                                <td class="hidden px-4 py-3 text-blue-500 truncate lg:table-cell">{{ $job_application->status }}</td>
+                            @elseif($job_application->status  === 'accepted')
+                                <td class="hidden px-4 py-3 text-green-500 truncate lg:table-cell">{{ $job_application->status }}</td>
+                            @else
+                                <td class="hidden px-4 py-3 text-red-500 truncate lg:table-cell">{{ $job_application->status }}</td>
+                            @endif --}}
+
+                            <td class="px-4 py-3 @if($job_application->status  === 'pending') text-blue-500  @elseif($job_application->status  === 'accepted') text-green-500 @else text-red-500 @endif truncate">{{ $job_application->status }}</td>
+
                             <td class="px-4 py-3">
                                 <div class="flex space-x-4">
                                     @if(request()->input('archived') == 'true')
@@ -76,7 +86,7 @@
             @forelse ($job_applications as $job_application)
                 <div class="p-4 bg-white rounded-lg shadow">
                     <div class="mb-2">
-                        <span class="text-xs font-semibold text-gray-500">Title</span>
+                        <span class="text-xs font-semibold text-gray-500">Application Name</span>
                         <p class="truncate">
                             <a href="{{ route('job_application.show', $job_application->id) }}" class="text-blue-500 underline hover:text-blue-700">{{ $job_application->user->name }}</a>
                         </p>
@@ -91,7 +101,7 @@
                     </div>
                     <div class="mb-2">
                         <span class="text-xs font-semibold text-gray-500">Status</span>
-                        <p class="text-gray-800 truncate">{{ $job_application->status }}</p>
+                        <p class="@if($job_application->status  === 'pending') text-blue-500  @elseif($job_application->status  === 'accepted') text-green-500 @else text-red-500 @endif truncate">{{ $job_application->status }}</p>
                     </div>
                     <div class="mb-2">
                         <span class="text-xs font-semibold text-gray-500">Actions</span>
@@ -112,7 +122,6 @@
                             @endif
                             </div>
                     </div>
-
                 </div>
             @empty
                 <p class="px-4 py-4 text-gray-800">No Job Application Found!</p>

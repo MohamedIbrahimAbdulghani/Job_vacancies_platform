@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateJobApplicationRequest;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class JobApplicationController extends Controller
         // Active
         $query = JobApplication::latest();
 
-        // // Archived
+        // Archived
         if($request->input('archived') == 'true') {
             $query->onlyTrashed();  // use it in archived mode when use softDeletes()
         }
@@ -54,15 +55,24 @@ class JobApplicationController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $job_application = JobApplication::findOrFail($id);
+        return view('job_application.edit', compact('job_application'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateJobApplicationRequest $request, string $id)
     {
-        //
+        $job_application = JobApplication::findOrFail($id);
+        $job_application->update([
+            'status' => $request->status
+        ]);
+        // This condition is added to identify the incoming route type
+        if($request->query('redirectToList') == 'false') {
+            return redirect()->route('job_application.show', $id)->with('success', 'Job Application Updated Successfully!');
+        }
+        return redirect()->route('job_application.index')->with('success', 'Job Application Updated Successfully!');
     }
 
     /**
