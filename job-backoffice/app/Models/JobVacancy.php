@@ -31,7 +31,8 @@ class JobVacancy extends Model
         'salary',
         'type',
         'company_id',
-        'category_id'
+        'category_id',
+        'view_count'
     ];
 
     protected $dates = [

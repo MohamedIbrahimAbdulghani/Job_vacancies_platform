@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Carbon\Carbon;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -25,6 +26,11 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+
+        // Make it to store time when user make login to store this data in last_login_at field in database to get count of active user in system
+        $request->user()->update([
+            'last_login_at' => Carbon::now(),
+        ]);
 
         $request->session()->regenerate();
 
