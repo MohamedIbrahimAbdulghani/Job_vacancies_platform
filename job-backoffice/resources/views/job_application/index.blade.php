@@ -25,7 +25,9 @@
                     <tr>
                         <th class="px-4 py-3 text-sm font-semibold text-left text-gray-600">Application Name</th>
                         <th class="px-4 py-3 text-sm font-semibold text-left text-gray-600 ">Position(Job Vacancy)</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-left text-gray-600 ">Company</th>
+                        @if (Auth::user()->role === 'admin')
+                            <th class="px-4 py-3 text-sm font-semibold text-left text-gray-600 ">Company</th>
+                        @endif
                         <th class="hidden px-4 py-3 text-sm font-semibold text-left text-gray-600 lg:table-cell">Status</th>
                         <th class="px-4 py-3 text-sm font-semibold text-left text-gray-600 ">Actions</th>
                     </tr>
@@ -41,7 +43,9 @@
                                 @endif
                                 </td>
                             <td class="px-4 py-3 text-gray-800 truncate">{{ $job_application->jobVacancy->title ?? 'NULL'}}</td>
-                            <td class="px-4 py-3 text-gray-800 truncate">{{ $job_application->jobVacancy->company->name ?? 'NULL' }}</td>
+                            @if (Auth::user()->role === 'admin')
+                                <td class="px-4 py-3 text-gray-800 truncate">{{ $job_application->jobVacancy->company->name ?? 'NULL' }}</td>
+                            @endif
 
                             {{-- @if($job_application->status  === 'pending')
                                 <td class="hidden px-4 py-3 text-blue-500 truncate lg:table-cell">{{ $job_application->status }}</td>

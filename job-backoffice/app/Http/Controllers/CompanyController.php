@@ -71,18 +71,26 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id = null)
     {
-        $company = Company::findOrFail($id);
+        if($id) {
+            $company = Company::findOrFail($id);
+        } else {
+            $company = Company::where('owner_id', Auth::user()->id)->first();
+        }
         return view('company.show', compact('company'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id = null)
     {
-        $company = Company::findOrFail($id);
+        if($id) {
+            $company = Company::findOrFail($id);
+        } else {
+            $company = Company::where('owner_id', Auth::user()->id)->first();
+        }
         $industries = $this->industries;
         return view('company.edit', compact('company', 'industries'));
     }
@@ -90,9 +98,13 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCompanyRequest $request, string $id)
+    public function update(UpdateCompanyRequest $request, string $id = null)
     {
-        $company = Company::findOrFail($id);
+        if($id) {
+            $company = Company::findOrFail($id);
+        } else {
+            $company = Company::where('owner_id', Auth::user()->id)->first();
+        }
         $company->update([
             'name' => $request->name,
             'address' => $request->address,
@@ -112,7 +124,10 @@ class CompanyController extends Controller
         if($request->query('redirectToList') == 'false') {
             return redirect()->route('company.show', $id)->with('success', 'Company Updated Successfully!');
         }
-        return redirect()->route('company.index')->with('success', 'Company Updated Successfully!');
+        if(Auth::user()->role === 'company_owner') {
+            return redirect()->route('my-company.show')->with('success', 'Company Updated Successfully!');
+        }
+            return redirect()->route('company.index')->with('success', 'Company Updated Successfully!');
     }
 
     /**

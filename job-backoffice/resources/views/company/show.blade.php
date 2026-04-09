@@ -7,9 +7,11 @@
 
     <div class="p-3 sm:p-4 lg:p-6">
         {{-- Back Button --}}
-        <div class="mb-6">
-            <a href="{{ route('company.index') }}" class="px-4 py-2 text-white bg-gray-400 rounded-md hover:bg-gray-500">← Back</a>
-        </div>
+        @if(Auth::user()->role === 'admin')
+            <div class="mb-6">
+                <a href="{{ route('company.index') }}" class="px-4 py-2 text-white bg-gray-400 rounded-md hover:bg-gray-500">← Back</a>
+            </div>
+        @endif
 
         {{-- To Show Success Message --}}
         <x-toast-notification />
@@ -19,6 +21,7 @@
             <div class="mb-4">
                 <h3 class="text-lg font-bold">Company Information</h3>
                 <p class="truncate"><strong>Name: </strong>{{ $company->name }}</p>
+                <p class="truncate"><strong>Email: </strong>{{ $company->owner->email }}</p>
                 <p class="truncate"><strong>Owner: </strong>{{ $company->owner->name }}</p>
                 <p class="truncate"><strong>Address: </strong>{{ $company->address }}</p>
                 <p class="truncate"><strong>Industry: </strong>{{ $company->industry }}</p>
@@ -27,14 +30,21 @@
 
             {{-- Edit And Archived Buttons --}}
             <div class="flex flex-col mb-6 space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-2">
-                <a href="{{ route('company.edit', ['company' => $company->id, 'redirectToList' => 'false']) }}" class="inline-flex items-center justify-center w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 sm:w-auto">Edit</a>
-                <form action="{{ route('company.destroy', $company->id) }}" method="post" class="w-full sm:w-auto">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="inline-flex items-center justify-center w-full px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 sm:w-auto">Archive</button>
-                </form>
+                @if (Auth::user()->role === 'company_owner')
+                    <a href="{{ route('my-company.edit') }}" class="inline-flex items-center justify-center w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 sm:w-auto">Edit</a>
+                @else
+                    <a href="{{ route('company.edit', ['company' => $company->id, 'redirectToList' => 'false']) }}" class="inline-flex items-center justify-center w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 sm:w-auto">Edit</a>
+                @endif
+                @if (Auth::user()->role == 'admin')
+                    <form action="{{ route('company.destroy', $company->id) }}" method="post" class="w-full sm:w-auto">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="inline-flex items-center justify-center w-full px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 sm:w-auto">Archive</button>
+                    </form>
+                @endif
             </div>
 
+            @if (Auth::user()->role === 'admin')
             <!-- Tabs Navigation -->
             <div class="mb-6">
                 <ul class="flex space-x-2">
@@ -46,12 +56,10 @@
                     </li>
                 </ul>
             </div>
-
             {{-- Tabs Content --}}
             <div>
                 {{-- Jobs Tab --}}
                 <div class="{{ request('tab') == 'jobs' || request('tab') == '' ? 'block' : 'hidden' }}">
-
                     {{-- Jobs Table: tablet & desktop --}}
                     <div class="hidden md:block">
                         <table class="w-full rounded-lg shadow table-fixed bg-gray-50">
@@ -155,6 +163,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
         </div>
     </div>

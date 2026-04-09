@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateJobApplicationRequest;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JobApplicationController extends Controller
 {
@@ -15,6 +16,13 @@ class JobApplicationController extends Controller
     {
         // Active
         $query = JobApplication::latest();
+
+        // this to connect between Job_Application and Company by Job_Vacancy
+        if(Auth::user()->role === 'company_owner') {
+            $query->whereHas('jobVacancy', function($query) {
+                $query->where('company_id', Auth::user()->company->id);
+            });
+        }
 
         // Archived
         if($request->input('archived') == 'true') {

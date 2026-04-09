@@ -9,6 +9,7 @@ use App\Models\JobCategory;
 use Illuminate\Http\Request;
 
 use App\Models\JobVacancy;
+use Illuminate\Support\Facades\Auth;
 
 class JobVacancyController extends Controller
 {
@@ -22,6 +23,9 @@ class JobVacancyController extends Controller
         // Active
         $query = JobVacancy::latest();
 
+        if(Auth::user()->role === 'company_owner') {
+            $query->where('company_id', Auth::user()->company->id);
+        }
         // // Archived
         if($request->input('archived') == 'true') {
             $query->onlyTrashed();  // use it in archived mode when use softDeletes()

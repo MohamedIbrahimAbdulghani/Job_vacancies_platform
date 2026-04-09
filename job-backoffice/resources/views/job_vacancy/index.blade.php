@@ -25,7 +25,9 @@
                 <thead>
                     <tr>
                         <th class="w-1/4 px-4 py-3 text-sm font-semibold text-left text-gray-600">Title</th>
-                        <th class="w-1/4 px-4 py-3 text-sm font-semibold text-left text-gray-600">Company</th>
+                        @if(Auth::user()->role === 'admin')
+                            <th class="w-1/4 px-4 py-3 text-sm font-semibold text-left text-gray-600">Company</th>
+                        @endif
                         <th class="w-1/4 px-4 py-3 text-sm font-semibold text-left text-gray-600">Location</th>
                         <th class="hidden w-1/6 px-4 py-3 text-sm font-semibold text-left text-gray-600 lg:table-cell">Type</th>
                         <th class="hidden w-1/6 px-4 py-3 text-sm font-semibold text-left text-gray-600 lg:table-cell">Salary</th>
@@ -42,7 +44,9 @@
                                     <a href="{{ route('job_vacancy.show', $job_vacancy->id) }}" class="text-blue-500 underline hover:text-blue-700">{{ $job_vacancy->title }}</a>
                                 @endif
                                 </td>
-                            <td class="px-4 py-3 text-gray-800 truncate">{{ $job_vacancy->company->name }}</td>
+                            @if(Auth::user()->role === 'admin')
+                                <td class="px-4 py-3 text-gray-800 truncate">{{ $job_vacancy->company->name }}</td>
+                            @endif
                             <td class="px-4 py-3 text-gray-800 truncate">{{ $job_vacancy->location }}</td>
                             <td class="hidden px-4 py-3 text-gray-800 truncate lg:table-cell">{{ $job_vacancy->type }}</td>
                             <td class="hidden px-4 py-3 text-gray-800 truncate lg:table-cell">${{ number_format($job_vacancy->salary, 2) }}</td>

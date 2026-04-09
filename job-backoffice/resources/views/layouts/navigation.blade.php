@@ -21,25 +21,38 @@
             Dashboard
         </x-nav-link>
 
-        <x-nav-link :href="route('company.index')" :active="request()->routeIs('company.index')">
-            Companies
-        </x-nav-link>
+        @if (auth()->user()->role === 'admin')
+            <x-nav-link :href="route('company.index')" :active="request()->routeIs('company.index')">
+                Companies
+            </x-nav-link>
+        @endif
+
+        @if (auth()->user()->role === 'company_owner')
+            <x-nav-link :href="route('my-company.show')" :active="request()->routeIs('my-company.show')">
+                My Company
+            </x-nav-link>
+        @endif
 
         <x-nav-link :href="route('job_application.index')" :active="request()->routeIs('job_application.index')">
             Job Application
         </x-nav-link>
 
-        <x-nav-link :href="route('job_category.index')" :active="request()->routeIs('job_category.index')">
-            Job Categories
-        </x-nav-link>
+        @if (auth()->user()->role === 'admin')
+            <x-nav-link :href="route('job_category.index')" :active="request()->routeIs('job_category.index')">
+                Job Categories
+            </x-nav-link>
+        @endif
 
         <x-nav-link :href="route('job_vacancy.index')" :active="request()->routeIs('job_vacancy.index')">
             Job Vacancies
         </x-nav-link>
 
-        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-            Users
-        </x-nav-link>
+        @if (auth()->user()->role === 'admin')
+            <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                Users
+            </x-nav-link>
+        @endif
+
 
         <hr>
 

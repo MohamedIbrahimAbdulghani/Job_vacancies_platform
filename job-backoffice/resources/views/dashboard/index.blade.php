@@ -12,7 +12,7 @@
             <div class="overflow-hidden bg-white rounded-lg shadow-sm">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-medium text-gray-900">Active Users</h3>
-                    <p class="text-3xl font-bold text-indigo-600">{{ $activeUsers }}</p>
+                    <p class="text-3xl font-bold text-indigo-600">{{ $analytics['activeUsers'] }}</p>
                     <p class="text-sm text-gray-500">Last 30 days</p>
                 </div>
             </div>
@@ -20,7 +20,7 @@
             <div class="overflow-hidden bg-white rounded-lg shadow-sm">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-medium text-gray-900">Active Job Postings</h3>
-                    <p class="text-3xl font-bold text-indigo-600">{{ $totalJobs }}</p>
+                    <p class="text-3xl font-bold text-indigo-600">{{ $analytics['totalJobs'] }}</p>
                     <p class="text-sm text-gray-500">Currently active</p>
                 </div>
             </div>
@@ -28,7 +28,7 @@
             <div class="overflow-hidden bg-white rounded-lg shadow-sm">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-medium text-gray-900">Total Applications</h3>
-                    <p class="text-3xl font-bold text-indigo-600">{{ $totalApplications }}</p>
+                    <p class="text-3xl font-bold text-indigo-600">{{ $analytics['totalApplications'] }}</p>
                     <p class="text-sm text-gray-500">All time</p>
                 </div>
             </div>
@@ -44,17 +44,21 @@
                                 <tr>
                                     <th class="px-6 py-3 font-medium">#</th>
                                     <th class="px-6 py-3 font-medium">Job Title</th>
-                                    <th class="px-6 py-3 font-medium">Company</th>
+                                    @if (Auth::user()->role === 'admin')
+                                        <th class="px-6 py-3 font-medium">Company</th>
+                                    @endif
                                     <th class="px-6 py-3 font-medium">Applications</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
                                 <?php $x=1; ?>
-                                @foreach ($mostAppliedJobs as $job)
+                                @foreach ($analytics['mostAppliedJobs'] as $job)
                                 <tr class="transition-colors hover:bg-gray-50">
                                     <td class="px-6 py-4 text-gray-400">{{ $x++ }}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900">{{ $job->title }}</td>
-                                    <td class="px-6 py-4 text-gray-500">{{ $job->company->name }}</td>
+                                    @if (Auth::user()->role === 'admin')
+                                        <td class="px-6 py-4 text-gray-500">{{ $job->company->name }}</td>
+                                    @endif
                                     <td class="px-6 py-4">
                                         <span class="px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full">{{ $job->totalCountJobApplication }}</span>
                                     </td>
@@ -83,7 +87,7 @@
                             </thead>
                             <tbody class="divide-y divide-gray-100">
                                 <?php $x=1; ?>
-                                @foreach ($conversionJobRates as $conversionJobRate)
+                                @foreach ($analytics['conversionJobRates'] as $conversionJobRate)
                                     <tr class="transition-colors hover:bg-gray-50">
                                         <td class="px-6 py-4 text-gray-400">{{ $x++ }}</td>
                                         <td class="px-6 py-4 font-medium text-gray-900">{{ $conversionJobRate->title }}</td>

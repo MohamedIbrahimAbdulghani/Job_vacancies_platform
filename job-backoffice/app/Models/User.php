@@ -56,6 +56,7 @@ class User extends Authenticatable
             'deleted_at' => 'datetime',
         ];
     }
+
     public function resumes() {
         return $this->hasMany(Resume::class, 'user_id', 'id');
     }
@@ -65,6 +66,6 @@ class User extends Authenticatable
     }
 
     public function company() {
-        return $this->hasOne(Company::class, 'user_id', 'id');
+        return $this->hasOne(Company::class, 'owner_id', 'id');
     }
 }
