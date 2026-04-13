@@ -8,7 +8,7 @@
 
     <div x-data="{ show: false }" x-init="setTimeout( () => show = true, 300 )">
         <div x-cloak x-show="show" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100  scale-100">
-            <h1 class="mb-6 text-4xl font-bold tracking-tight sm:text-6xl md:text-8xl">
+            <h1 class="mb-6 text-3xl font-bold tracking-tight sm:text-6xl md:text-8xl">
                 <span class="text-white">Find Your</span> <br>
                 <span class="font-serif italic text-white/60">Dream Job</span>
             </h1>
@@ -17,7 +17,7 @@
 
     <div x-data="{ show: false }" x-init="setTimeout( () => show = true, 300 )">
         <div x-cloak x-show="show" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100  scale-100">
-            <p class="text-lg text-white/60">Connect with top employers, and find exciting opportunities .</p>
+            <p class="text-lg text-white/60 ">Connect with top employers, and find exciting opportunities .</p>
         </div>
     </div>
 

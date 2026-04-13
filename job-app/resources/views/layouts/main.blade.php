@@ -19,7 +19,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-black text-white min-h-screen flex items-center justify-center relative overflow-hidden">
+<body class="relative flex items-center justify-center min-h-screen overflow-hidden text-white bg-black">
 
     <!-- Floating Background Shapes -->
     <div class="absolute inset-0 overflow-hidden">
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Bottom Gradient -->
-    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80 pointer-events-none"></div>
+    <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black via-transparent to-black/80"></div>
 
 </body>
-</html> 
+</html>
