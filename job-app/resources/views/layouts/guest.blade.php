@@ -23,7 +23,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-black text-white min-h-screen flex items-center justify-center relative overflow-hidden">
+<body class="relative flex items-center justify-center min-h-screen overflow-hidden text-white bg-black">
     <!-- Floating Background Shapes -->
     <div class="absolute inset-0 overflow-hidden">
         <div
@@ -41,23 +41,23 @@
     </div>
 
     <!-- Bottom Gradient -->
-    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80 pointer-events-none"></div>
+    <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black via-transparent to-black/80"></div>
 
     <!-- Main Content Container -->
-    <div class="relative z-10 w-full min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0"
+    <div class="relative z-10 flex flex-col items-center w-full min-h-screen pt-6 sm:justify-center sm:pt-0"
         x-data="{ show: false }" x-init="setTimeout(() => show = true, 300)">
         <!-- Application Logo -->
         <div class="mb-8" x-cloak x-show="show" x-transition:enter="transition ease-out duration-700"
             x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-300 hover:text-white transition-colors" />
+                <x-application-logo class="w-20 h-20 text-gray-300 transition-colors fill-current hover:text-white" />
             </a>
         </div>
 
         <!-- Content Card -->
         <div x-cloak x-show="show" x-transition:enter="transition ease-out duration-700"
             x-transition:enter-start="opacity-0 translate-y-6" x-transition:enter-end="opacity-100 translate-y-0"
-            class="w-full sm:max-w-md px-6 py-8 bg-gray-800/50 backdrop-blur-sm border border-white/10 rounded-xl shadow-2xl transition-all duration-300 hover:shadow-3xl">
+            class="w-full px-6 py-8 transition-all duration-300 border shadow-2xl sm:max-w-md bg-gray-800/50 backdrop-blur-sm border-white/10 rounded-xl hover:shadow-3xl">
             {{ $slot }}
         </div>
     </div>

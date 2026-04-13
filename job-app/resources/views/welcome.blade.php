@@ -21,10 +21,18 @@
         </div>
     </div>
 
-    <div x-data="{ show: false }" x-init="setTimeout( () => show = true, 300 )">
-        <div class="mt-5 space-x-2" x-cloak x-show="show" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100  scale-100">
-            <a href="{{ 'register' }}" class="px-4 py-2 text-lg text-white rounded-lg bg-white/10">Create an Account</a>
-            <a href="{{ 'login' }}" class="px-4 py-2 text-lg text-white rounded-lg bg-gradient-to-r from-indigo-500 to-rose-500">Login</a>
+    @if(Auth::user())
+        <div x-data="{ show: false }" x-init="setTimeout( () => show = true, 300 )">
+            <div class="mt-5 space-x-2" x-cloak x-show="show" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100  scale-100">
+                <a href="{{ 'dashboard' }}" class="px-4 py-2 text-lg text-white rounded-lg bg-gradient-to-r from-indigo-500 to-rose-500">Dashboard</a>
+            </div>
         </div>
-    </div>
+    @else
+        <div x-data="{ show: false }" x-init="setTimeout( () => show = true, 300 )">
+            <div class="mt-5 space-x-2" x-cloak x-show="show" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100  scale-100">
+                <a href="{{ 'register' }}" class="px-4 py-2 text-lg text-white rounded-lg bg-white/10">Create an Account</a>
+                <a href="{{ 'login' }}" class="px-4 py-2 text-lg text-white rounded-lg bg-gradient-to-r from-indigo-500 to-rose-500">Login</a>
+            </div>
+        </div>
+    @endif
 </x-main-layout>
