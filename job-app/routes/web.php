@@ -20,6 +20,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Route To Test OpenAI
+    Route::get('test-openai', [JobVacancyController::class, 'testOpenAi'])->name('job_vacancy.testOpenAi');
 });
 
 require __DIR__.'/auth.php';
