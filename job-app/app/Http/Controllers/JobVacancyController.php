@@ -11,7 +11,11 @@ class JobVacancyController extends Controller
         $job_vacancies = JobVacancy::findOrFail($id);
         return view('job_vacancy.show', compact('job_vacancies'));
     }
-    public function apply(Request $request) {
-        return $request;
+    public function apply($id) {
+        $job_vacancies = JobVacancy::findOrFail($id);
+        return view('job_vacancy.apply', compact('job_vacancies'));
+    }
+    public function processing($id) {
+
     }
 }
