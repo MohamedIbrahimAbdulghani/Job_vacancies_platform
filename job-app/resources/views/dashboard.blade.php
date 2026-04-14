@@ -49,7 +49,7 @@
             {{-- Job List --}}
             <div class="mt-6 space-y-4">
                 @forelse ($jobs as $job)
-                    <div class="flex flex-col gap-3 pb-4 border-b border-white/10 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-center justify-between min-w-0">
                         <div class="min-w-0">
                             <a href="{{ route('job_vacancy.show', $job->id) }}" class="text-lg font-semibold text-blue-400 hover:underline line-clamp-1">
                                 {{ $job->title }}
@@ -57,7 +57,7 @@
                             <p class="text-sm text-white line-clamp-1">{{ $job->company->name }} - {{ $job->location }}</p>
                             <p class="text-sm text-white">{{'$' . number_format($job->salary, 2) }} / Year</p>
                         </div>
-                        <span class="self-start px-3 py-2 text-sm text-white bg-blue-500 rounded-lg sm:self-center whitespace-nowrap">
+                        <span class="self-start px-3 py-2 ml-3 text-sm text-white bg-blue-500 rounded-lg shrink-0 sm:self-center whitespace-nowrap">
                             {{ $job->type }}
                         </span>
                     </div>

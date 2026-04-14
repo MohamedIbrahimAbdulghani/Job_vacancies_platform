@@ -22,14 +22,13 @@ class JobVacancyController extends Controller
     public function testOpenAi() {
         try {
             $result = OpenAI::chat()->create([
-                'model' => 'openrouter/auto',
+                'model' => 'gpt-4o-mini',
+                // 'model' => 'openrouter/auto',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'You are an HR manager.'],
                     ['role' => 'user', 'content' => 'Hello !'],
                     // [
-                        // 'role' => 'user',
-                        // 'content' => 'اعمل وصف وظيفي لمبرمج Laravel',
-                        // 'content' => 'Hello!',
+                    //     'role' => 'user',
+                    //     'content' => 'اعمل وصف وظيفي لمبرمج Laravel',
                     // ],
                 ],
             ]);
