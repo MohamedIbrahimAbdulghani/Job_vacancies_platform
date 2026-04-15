@@ -23,8 +23,23 @@
                 </div>
             </div>
 
-            <form action="{{ route('job_vacancy.processing', $job_vacancies->id) }}" method="POST" class="space-y-6">
+            <form action="{{ route('job_vacancy.processing', $job_vacancies->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
+                <!-- to show errros -->
+                    @if($errors->any())
+                        <div x-data="{ show: true }">
+                            <template x-if="show">
+                                <div class="bg-red-500 text-white p-4 rounded-lg relative">
+                                    <button  @click="show = false" class="absolute top-2 right-2 text-white text-xl font-bold hover:text-gray-200">  &times;  </button>
+                                    <ul>
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </template>
+                        </div>
+                    @endif
                 {{-- Resume Selection --}}
                 <div>
                     <h3 class="mb-4 text-xl font-semibold text-white">Choose Your Resume</h3>

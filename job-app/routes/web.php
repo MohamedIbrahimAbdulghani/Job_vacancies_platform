@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Route To Test OpenAI
-    Route::get('test-openai', [JobVacancyController::class, 'testOpenAi'])->name('job_vacancy.testOpenAi');
+    // Route::get('test-openai', [JobVacancyController::class, 'testOpenAi'])->name('testOpenAi');
 });
 
 require __DIR__.'/auth.php';
