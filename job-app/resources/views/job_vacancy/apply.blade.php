@@ -29,8 +29,8 @@
                     @if($errors->any())
                         <div x-data="{ show: true }">
                             <template x-if="show">
-                                <div class="bg-red-500 text-white p-4 rounded-lg relative">
-                                    <button  @click="show = false" class="absolute top-2 right-2 text-white text-xl font-bold hover:text-gray-200">  &times;  </button>
+                                <div class="relative p-4 text-white bg-red-500 rounded-lg">
+                                    <button  @click="show = false" class="absolute text-xl font-bold text-white top-2 right-2 hover:text-gray-200">  &times;  </button>
                                     <ul>
                                         @foreach($errors->all() as $error)
                                             <li>{{ $error }}</li>
@@ -46,16 +46,30 @@
                     <div class="mb-6">
                         <x-input-label for="resume" value="Select from your existing resumes:" />
                         {{-- list of resumes --}}
+                        <div class="space-y-4">
+                            @forelse($resumes as $resume)
+                                <div class="flex gap-2 mt-2 item-center">
+                                    <input type="radio" name="resume_option" id="{{ $resume->id }}" value="{{ $resume->id }}" @error('resume_option') class="border-red-500" @else class="border-gray-600" @enderror >
+                                    <x-input-label for="{{ $resume->id }}" class="text-white cursor-pointer">{{ $resume->filename }}</x-input-label>
+                                    <span class="text-sm text-gray-400">(Last updated: {{ $resume->updated_at->format('d M,Y') }})</span>
+                                </div>
+                                @empty
+                                    <span class="text-sm text-gray-400">No resumes found .</span>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
                 {{-- upload new resume --}}
                 <div x-data="{ fileName: '', hasError: {{ $errors->has('resume_file') ? 'true' : 'false' }}}">
-                    <x-input-label for="resume" value="Or upload a new resume:" />
+                    <div class="flex items-center gap-2">
+                        <input x-ref="newResumeRadio" type="radio" name="resume_option" id="new_resume" value="new_resume" @error('resume_option') class="border-red-500" @else class="border-gray-600" @enderror >
+                        <x-input-label for="new_resume" value="upload a new resume:" />
+                    </div>
                     <div class="flex items-center">
                         <div class="flex-1">
                             <label for="new_resume_file" class="block text-white cursor-pointer">
                                 <div class="p-6 mt-2 transition border-2 border-red-500 border-dashed rounded-lg bg-white/5 hover:bg-white/5 " :class="{ 'border-blue-500':fileName, 'border-red-500':hasError }">
-                                    <input @change="fileName = $event.target.files[0]?.name" type="file" name="resume_file" id="new_resume_file" class="hidden" accept=".pdf">
+                                    <input @change="fileName = $event.target.files[0]?.name; $refs.newResumeRadio.checked = true" type="file" name="resume_file" id="new_resume_file" class="hidden" accept=".pdf">
                                     <div class="text-center">
                                         <template x-if="!fileName">
                                             <p class="text-gray-400">📄 Click to upload PDF (MAX 5MB)</p>

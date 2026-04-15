@@ -16,45 +16,69 @@ class JobVacancyController extends Controller
         $job_vacancies = JobVacancy::findOrFail($id);
         return view('job_vacancy.show', compact('job_vacancies'));
     }
+
     public function apply($id) {
         $job_vacancies = JobVacancy::findOrFail($id);
-        return view('job_vacancy.apply', compact('job_vacancies'));
+        $resumes = Auth::user()->resumes;
+        return view('job_vacancy.apply', compact('job_vacancies', 'resumes'));
     }
+
+    // this function to upload file n cloud
     public function processing(ApplyJobRequest $request, $id) {
-        $file = $request->file('resume_file');
-        $originalFileName = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();
-        $fileName = 'resume_' . time() . $extension;
-        // Store in laravel cloud
-        $path = $file->storeAs('resumes', $fileName, 'cloud');
 
-        // $fullPathFileUrl = config('filesystems.disks.cloud.url') . '/' . $path;
+        $extractInfo = null;
 
-        // Create resume in database
-        $resume = Resume::create([
-            'filename' => $originalFileName,
-            'fileUrl' => $path,
-            'contactDetails' => json_encode([
-                'name' => Auth::user()->name,
-                'email' => Auth::user()->email,
-            ]),
-            'education' => '',
-            'summary' => '',
-            'skills' => '',
-            'experience' => '',
-            'user_id' => Auth::user()->id,
-        ]);
+        if($request->resume_option === 'new_resume') {
+            $file = $request->file('resume_file');
+            $originalFileName = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $fileName = 'resume_' . time() . '.' . $extension;
+            // Store in laravel cloud
+            $path = $file->storeAs('resumes', $fileName, 'cloud');
 
-        // Create Job Application
-        $job_application = JobApplication::create([
-            'status' => 'pending',
-            'aiGeneratedScore' => 0,
-            'aiGeneratedFeedback' => '',
-            'user_id' => Auth::user()->id,
-            'resume_id' => $resume->id,
-            'job_vacancy_id' => $id,
-        ]);
+            // $fullPathFileUrl = config('filesystems.disks.cloud.url') . '/' . $path;
 
+            // TODO: Extract information from the resume
+            $extractInfo = [
+                'education' => '',
+                'summary' => '',
+                'skills' => '',
+                'experience' => '',
+            ];
+            // Create resume in database
+            $resume = Resume::create([
+                'filename' => $originalFileName,
+                'fileUrl' => $path,
+                'contactDetails' => json_encode([
+                    'name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                ]),
+                'education' => $extractInfo['education'],
+                'summary' => $extractInfo['summary'],
+                'skills' => $extractInfo['skills'],
+                'experience' => $extractInfo['experience'],
+                'user_id' => Auth::user()->id,
+            ]);
+        } else {
+            $resume_id = $request->resume_option;
+            $resume = Resume::findOrFail($resume_id);
+            $extractInfo = [
+                'education' => $resume->education,
+                'summary' => $resume->summary,
+                'skills' => $resume->skills,
+                'experience' => $resume->experience,
+            ];
+        }
+        // TODO: Evaluate Job Application
+        // Use the $extractInfo to evaluate the job application
+            JobApplication::create([
+                'status' => 'pending',
+                'aiGeneratedScore' => 0,
+                'aiGeneratedFeedback' => '',
+                'user_id' => Auth::user()->id,
+                'resume_id' => $resume->id,
+                'job_vacancy_id' => $id,
+            ]);
         return redirect()->route('job_application.index', $id)->with('success', 'Application Submitted Successfully');
 
     }
