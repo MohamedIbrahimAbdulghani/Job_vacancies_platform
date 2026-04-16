@@ -6,6 +6,7 @@ use App\Models\JobApplication;
 use App\Models\JobVacancy;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -21,10 +22,13 @@ class DashboardController extends Controller
 
     private function adminDashboard() {
         // Last 30 days active users (job-seeker role)
-        $activeUsers = User::whereNotNull('last_login_at')
-        ->where('last_login_at', '>=', now()->subDays(30))
-        ->where('role', 'job_seeker')
+        $activeUsers = User::where('role', 'job_seeker')
+        ->where('last_login_at', '>=', Carbon::now()->subDays(30))
         ->count();
+        // $activeUsers = User::whereNotNull('last_login_at')
+        // ->where('last_login_at', '>=', now()->subDays(30))
+        // ->where('role', 'job_seeker')
+        // ->count();
 
         // Total Jobs ( not deleted )
         $totalJobs = JobVacancy::whereNull('deleted_at')
