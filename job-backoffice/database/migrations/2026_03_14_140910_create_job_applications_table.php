@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('job_applications', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
-            $table->float('aiGeneratedScore', 2)->default(0);
+            $table->decimal('aiGeneratedScore', 3, 1)->default(0);
             $table->mediumText('aiGeneratedFeedback')->nullable();
             $table->softDeletes();
             $table->timestamps();

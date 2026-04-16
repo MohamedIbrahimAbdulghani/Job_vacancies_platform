@@ -78,6 +78,63 @@ class ResumeAnalysisService {
             ];
         }
     }
+
+    public function analyzeResume($jobVacancy, $resumeData) {
+        try {
+            $jobDetails = json_encode([
+                'job_title' => $jobVacancy->title,
+                'job_description' => $jobVacancy->description,
+                'job_location' => $jobVacancy->location,
+                'job_type' => $jobVacancy->type,
+                'job_salary' => $jobVacancy->salary,
+            ]);
+
+            $resumeDetails = json_encode($resumeData);
+
+            $response = OpenAI::chat()->create([
+                'model' => 'gpt-4o-mini',
+                'messages' => [
+                [
+                    'role' => 'system',
+                    'content' => "You are an expert HR professional and job recruiter. You are given a job vacancy and a resume. Your task is to analyze the resume and determine if the candidate is a good fit for the job. The output should be in JSON format. Provide a score from 0 to 100 to 100 with at most one decimal place (e.g. 70 or 70.5). Do not return more than one decimal digit. for the candidate's suitability for the job, and a detailed feedback. Response should only be Json that has the following keys: 'aiGeneratedScore', 'aiGeneratedFeedback'. Ai generate feedback should be detailed and specific to the job and the candidate's resume. " // this is prompt to AI Chat
+                ],
+                [
+                    'role' => 'user',
+                    'content' => "Please evaluate this job application. Job Details: { $jobDetails } . Resume Details: { $resumeDetails }"    // Required keys and data format
+                ]
+                ],
+
+                'response_format' => [
+                    'type' => 'json_object' // this case to forced about AI Or forced about ChatGPT returned clean JSON without any more data focus about user message i will send this user massage in messages when created it
+                ],
+                'temperature' => 0 // Sets the randomness of the AI response to 0, making it deterministic and focused on the most likely completion
+            ]);
+            $result = $response->choices[0]->message->content;
+            Log::debug("OpenAI evaluate response: " . $result);
+
+            $parseResult = json_decode($result, true); // to convert to json associative array
+
+            if(json_last_error() !== JSON_ERROR_NONE) { // check about JSON is correct or not correct
+                Log::error('Failed to parse OpenAI response: ' . json_last_error_msg());
+                throw new \Exception('Failed to parse OpenAI response');
+            }
+            // check about keys
+            if(!isset($parseResult['aiGeneratedScore']) || !isset($parseResult['aiGeneratedFeedback'])) {
+                Log::error('Missing required keys in the parsed result');
+                throw new \Exception('Missing required keys in the parsed result');
+            }
+
+            return $parseResult;
+
+        }  catch (\Exception $e) {
+                Log::error('Error analyzing resume: ' . $e->getMessage());
+                return [
+                    'aiGeneratedScore' => 0,
+                    'aiGeneratedFeedback' => 'An error occurred while analyzing the resume. Please try again later. ',
+                ];
+        }
+    }
+
     private function extractTextFromPdf($fileUrl) {
 
         // *----------------*  1- Reading the file from the cloud to local disk storage in temp file *----------------* //

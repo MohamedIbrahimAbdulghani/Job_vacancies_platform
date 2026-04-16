@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:job_seeker'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/job_application', [JobApplicationController::class, 'index'])->name('job_application.index');
     Route::get('/job_vacancy/{id}', [JobVacancyController::class, 'show'])->name('job_vacancy.show');

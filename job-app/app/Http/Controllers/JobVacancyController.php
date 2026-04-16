@@ -35,6 +35,7 @@ class JobVacancyController extends Controller
     // this function to upload file n cloud
     public function processing(ApplyJobRequest $request, $id) {
 
+        $jobVacancy = JobVacancy::findOrFail($id);
         $extractInfo = null;
 
         if($request->resume_option === 'new_resume') {
@@ -73,12 +74,12 @@ class JobVacancyController extends Controller
                 'experience' => $resume->experience,
             ];
         }
-        // TODO: Evaluate Job Application
-        // Use the $extractInfo to evaluate the job application
+        // Evaluate Job Application
+        $evaluation = $this->ResumeAnalysisService->analyzeResume($jobVacancy, $extractInfo);
             JobApplication::create([
                 'status' => 'pending',
-                'aiGeneratedScore' => 0,
-                'aiGeneratedFeedback' => '',
+                'aiGeneratedScore' => $evaluation['aiGeneratedScore'],
+                'aiGeneratedFeedback' => $evaluation['aiGeneratedFeedback'],
                 'user_id' => Auth::user()->id,
                 'resume_id' => $resume->id,
                 'job_vacancy_id' => $id,
