@@ -1,3 +1,5 @@
 openAI with Laravel => https://github.com/openai-php/laravel
 flysystem-aws-s3-v3  => https://github.com/thephpleague/flysystem-aws-s3-v3
 aws-sdk-php =>   https://github.com/aws/aws-sdk-php
+pdf-to-text =>   https://github.com/spatie/pdf-to-text
+smalot/pdfparse  this is library to extract text from pdf => https://github.com/smalot/pdfparser

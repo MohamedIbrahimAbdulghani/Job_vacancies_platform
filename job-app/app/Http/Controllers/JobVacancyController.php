@@ -8,10 +8,19 @@ use OpenAI\Laravel\Facades\OpenAI;
 use App\Http\Requests\ApplyJobRequest;
 use App\Models\JobApplication;
 use App\Models\Resume;
+use App\Services\ResumeAnalysisService;
 use Illuminate\Support\Facades\Auth;
 
 class JobVacancyController extends Controller
 {
+    protected $ResumeAnalysisService;
+
+    // make it to use Design Pattern Model ( Dependency injection )
+    public function __construct(ResumeAnalysisService $ResumeAnalysisService)
+    {
+        $this->ResumeAnalysisService = $ResumeAnalysisService;
+    }
+
     public function show($id) {
         $job_vacancies = JobVacancy::findOrFail($id);
         return view('job_vacancy.show', compact('job_vacancies'));
@@ -36,15 +45,10 @@ class JobVacancyController extends Controller
             // Store in laravel cloud
             $path = $file->storeAs('resumes', $fileName, 'cloud');
 
-            // $fullPathFileUrl = config('filesystems.disks.cloud.url') . '/' . $path;
+            $fullPathFileUrl = config('filesystems.disks.cloud.url') . '/' . $path;
 
-            // TODO: Extract information from the resume
-            $extractInfo = [
-                'education' => '',
-                'summary' => '',
-                'skills' => '',
-                'experience' => '',
-            ];
+            $extractInfo = $this->ResumeAnalysisService->extractResumeInformation($fullPathFileUrl);
+
             // Create resume in database
             $resume = Resume::create([
                 'filename' => $originalFileName,
