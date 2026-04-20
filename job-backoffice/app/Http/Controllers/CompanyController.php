@@ -136,12 +136,20 @@ class CompanyController extends Controller
     public function destroy(string $id)
     {
         $company = Company::findOrFail($id);
+        foreach ($company->Jobvacancy as $job) {
+            $job->jobApplications()->delete(); // to delete all job_applications when the company deleted
+        }
+        $company->Jobvacancy()->delete(); // to delete all job_vacancy when the company deleted
         $company->delete();
         return redirect()->route('company.index')->with('success', 'Company Deleted Successfully!');
     }
     public function restore(string $id)
     {
         $company = Company::withTrashed()->findOrFail($id);
+        $company->Jobvacancy()->withTrashed()->restore(); // to restore job_vacancy
+        foreach ($company->Jobvacancy()->withTrashed()->get() as $job) {
+            $job->jobApplications()->withTrashed()->restore(); // to restore job_applications
+        }
         $company->restore();
         return redirect()->route('company.index', ['archived'=>'true'])->with('success', 'Company Restored Successfully!');
     }

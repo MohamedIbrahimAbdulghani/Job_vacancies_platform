@@ -13,7 +13,7 @@
             <div class="flex flex-col gap-4 pb-6 border-b border-white/10 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 class="text-2xl font-bold text-white">{{ $job_vacancies->title }}</h1>
-                    <p class="text-gray-400 text-md">{{ $job_vacancies->company->name }}</p>
+                    <p class="text-gray-400 text-md">{{ $job_vacancies->company?->name ?? 'Company Unavailable' }}</p>
                     <div class="flex flex-wrap items-center gap-2">
                         <p class="text-sm text-gray-400">{{ $job_vacancies->location }}</p>
                         <span class="text-gray-400">-</span>
@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <p class="text-gray-400">Company</p>
-                            <p class="text-white">{{ $job_vacancies->company->name }}</p>
+                            <p class="text-white">{{ $job_vacancies->company?->name ?? 'Company Unavailable' }}</p>
                         </div>
                         <div>
                             <p class="text-gray-400">Location</p>
@@ -57,7 +57,7 @@
                         </div>
                         <div>
                             <p class="text-gray-400">Category</p>
-                            <p class="text-white">{{ $job_vacancies->jobCategory->name }}</p>
+                            <p class="text-white">{{ $job_vacancies->jobCategory?->name ?? 'N/A' }}</p>
                         </div>
                     </div>
                 </div>

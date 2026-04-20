@@ -54,7 +54,8 @@
                             <a href="{{ route('job_vacancy.show', $job->id) }}" class="text-lg font-semibold text-blue-400 hover:underline line-clamp-1">
                                 {{ $job->title }}
                             </a>
-                            <p class="text-sm text-white line-clamp-1">{{ $job->company->name }} - {{ $job->location }}</p>
+                            {{-- <p class="text-sm text-white line-clamp-1">{{ $job->company->name }} - {{ $job->location }}</p> --}}
+                            <p class="text-sm text-white line-clamp-1">{{ $job->company?->name ?? 'Company Unavailable' }} - {{ $job->location }}</p>
                             <p class="text-sm text-white">{{'$' . number_format($job->salary, 2) }} / Year</p>
                         </div>
                         <span class="self-start px-3 py-2 ml-3 text-sm text-white bg-blue-500 rounded-lg shrink-0 sm:self-center whitespace-nowrap">

@@ -80,12 +80,26 @@ class JobCategoryController extends Controller
     public function destroy(string $id)
     {
         $category = JobCategory::findOrFail($id);
+        foreach ($category->Jobvacancy as $job) {
+            $job->jobApplications()->delete(); // to delete job_application when deleted job_category
+        }
+
+        $category->Jobvacancy()->delete(); // to delete job_vacancy when deleted job_category
+
         $category->delete();
+
         return redirect()->route('job_category.index')->with('success', 'Job Category Deleted Successfully!');
     }
     public function restore(string $id)
     {
         $category = JobCategory::withTrashed()->findOrFail($id);
+
+        $category->Jobvacancy()->withTrashed()->restore(); // to restore job_vacancy when deleted job_category
+
+        foreach ($category->Jobvacancy()->withTrashed()->get() as $job) {
+            $job->jobApplications()->withTrashed()->restore(); // to restore job_application when deleted job_category
+        }
+
         $category->restore();
         return redirect()->route('job_category.index', ['archived'=>'true'])->with('success', 'Job Category Restored Successfully!');
     }

@@ -20,7 +20,8 @@ class JobApplicationController extends Controller
         // this to connect between Job_Application and Company by Job_Vacancy
         if(Auth::user()->role === 'company_owner') {
             $query->whereHas('jobVacancy', function($query) {
-                $query->where('company_id', Auth::user()->company->id);
+                // $query->where('company_id', Auth::user()->company->id);
+                $query->withTrashed() ->where('company_id', Auth::user()->company->id);
             });
         }
 
@@ -54,7 +55,13 @@ class JobApplicationController extends Controller
      */
     public function show(string $id)
     {
-        $job_application = JobApplication::findOrFail($id);
+        $job_application = JobApplication::with([
+            'user',
+            'resume',
+            'jobVacancy' => fn($q) => $q->withTrashed(),
+            'jobVacancy.company' => fn($q) => $q->withTrashed(),
+        ])->findOrFail($id);
+
         return view('job_application.show', compact('job_application'));
     }
 

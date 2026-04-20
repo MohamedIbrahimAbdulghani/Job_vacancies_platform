@@ -43,6 +43,6 @@ class JobCategory extends Model
     }
 
     public function Jobvacancy() {
-        return $this->hasMany(JobVacancy::class, 'company_id', 'id');
+        return $this->hasMany(JobVacancy::class, 'category_id', 'id');
     }
 }

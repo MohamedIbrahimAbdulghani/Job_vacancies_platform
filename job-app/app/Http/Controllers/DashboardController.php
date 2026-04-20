@@ -35,6 +35,7 @@ class DashboardController extends Controller
             $query->where('type', $request->filter);
         }
 
+        // $jobs = $query->latest()->paginate(5)->withQueryString();
         $jobs = $query->latest()->paginate(5)->withQueryString();
         return view('dashboard', compact('jobs'));
     }

@@ -77,6 +77,17 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
+            // لو الـ user عنده company
+            if($user->company) {
+                //  احذف كل الـ applications
+                foreach ($user->company->Jobvacancy as $job) {
+                    $job->jobApplications()->delete();
+                }
+                //  احذف كل الـ jobs
+                $user->company->Jobvacancy()->delete();
+                //  احذف الـ company
+                $user->company->delete();
+            }
         $user->delete();
         return redirect()->route('user.index')->with('success', 'User Deleted Successfully!');
     }
@@ -84,6 +95,18 @@ class UserController extends Controller
     public function restore(string $id)
     {
         $user = User::withTrashed()->findOrFail($id);
+            // لو الـ user عنده company محذوفة
+            if($user->company()->withTrashed()->exists()) {
+                $company = $user->company()->withTrashed()->first();
+                //  restore الـ jobs
+                $company->Jobvacancy()->withTrashed()->restore();
+                //  restore الـ applications
+                foreach ($company->Jobvacancy()->withTrashed()->get() as $job) {
+                    $job->jobApplications()->withTrashed()->restore();
+                }
+                //  restore الـ company
+                $company->restore();
+            }
         $user->restore();
         return redirect()->route('user.index')->with('success', 'User Restored Successfully!');
     }
